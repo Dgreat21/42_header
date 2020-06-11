@@ -2,20 +2,21 @@ import os
 import random
 from datetime import datetime
 from config import AUTHORS
+from sys import argv
 
 
-def find_all_files(path, lst):
+def findAllFiles(path, lst):
     dir_ = os.listdir(path)
     for node in dir_:
         if os.path.isdir(path + '/' + node):
-            find_all_files(path + '/' + node, lst)
+            findAllFiles(path + '/' + node, lst)
         elif node.find('.c') or node.find('.h'):
             lst.append(path + '/' + node)
         else:
             continue
 
 
-def clean_header(path):
+def cleanFile(path):
     with open(path, 'r+') as f:
         f.seek(0)
         lst = f.read().split('\n')
@@ -32,7 +33,7 @@ def clean_header(path):
             F.write(line + '\n')
 
 
-def create_header(path, author):
+def createHeader(path, author):
     i = path.rfind('/') + 1
     filename = path[i:]
 
@@ -60,9 +61,20 @@ def create_header(path, author):
         f.writelines([h + '\n'] + lines)
 
 
-random.seed()
-queue = []
-find_all_files('/Volumes/Storage/RT/utils', queue)
-for node in queue:
-    clean_header(node)
-    create_header(node, AUTHORS[random.randint(0, len(AUTHORS) - 1)])
+def addHeadersToDir(path):
+    random.seed()
+    queue = []
+    findAllFiles(path, queue)
+    for node in queue:
+        cleanFile(node)
+        createHeader(node, AUTHORS[random.randint(0, len(AUTHORS) - 1)])
+
+
+for arg in argv:
+    if os.path.isdir(arg):
+        addHeadersToDir(arg)
+    elif arg == 'header.py':
+        continue
+    else:
+        print('"' + arg + '" isn\'t dir')
+        continue
