@@ -20,8 +20,11 @@ def cleanFile(path):
     with open(path, 'r+') as f:
         f.seek(0)
         lst = f.read().split('\n')
+        flag = 0
         for i in lst[:]:
-            if i.find('/*') == 0 or i.find(''):
+            if i.find("#") == 0 or i.find("{") == 0 or i == "/*":
+                flag = 1
+            if flag == 0 and (i.find('/*') == 0 or i.find('')):
                 lst.remove(i)
         F = open(path,'w')
         flag = 0
