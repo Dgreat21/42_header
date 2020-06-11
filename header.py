@@ -23,9 +23,13 @@ def clean_header(path):
             if i.find('/*') == 0 or i.find(''):
                 lst.remove(i)
         F = open(path,'w')
-        for i in lst:
-            if i != "":
-                F.write(i + '\n')
+        flag = 0
+        for line in lst:
+            if line.find("#") == 0 or line.find("{") == 0:
+                flag = 1
+            if line == "" and flag == 0:
+                continue
+            F.write(line + '\n')
 
 
 def create_header(path, author):
