@@ -90,5 +90,5 @@ for arg in argv:
     elif arg == 'header.py':
         continue
     else:
-        print('"' + arg + '" isn\'t dir')
+        print('"' + arg + '" isn\'t directory or file')
         continue
