@@ -15,10 +15,9 @@ def findAllFiles(path, lst):
     else:
         return
     for node in dir_:
-        if os.path.isdir(path + '/' + node) and node != 'external':
+        if os.path.isdir(path + '/' + node) and (node != 'external' or node != '.git'):
             findAllFiles(path + '/' + node, lst)
         elif re.match('.+\.[ch]', node):
-            # print(node)
             lst.append(path + '/' + node)
         else:
             continue
@@ -70,6 +69,7 @@ def createHeader(path, author):
     with open(path, 'r+') as f:
         lines = f.readlines()
         len_lines = len(lines)
+        len_lines -= 1
         tmp = lines[0:len_lines]
         f.seek(0)
         f.writelines([h + '\n'] + tmp)
@@ -80,7 +80,7 @@ def addHeadersToDir(path):
     queue = []
     findAllFiles(path, queue)
     for node in queue:
-        # cleanFile(node)
+        cleanFile(node)
         createHeader(node, AUTHORS[random.randint(0, len(AUTHORS) - 1)])
 
 
