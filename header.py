@@ -52,19 +52,26 @@ def createHeader(path, author):
     create = datetime.utcfromtimestamp(ts).strftime('%Y/%m/%d %H:%M:%S')
     ts = int(stat.st_mtime)
     mod = datetime.utcfromtimestamp(ts).strftime('%Y/%m/%d %H:%M:%S')
-
-    h1 = "/* ************************************************************************** */" + '\n'
-    h2 = "/*                                                                            */" + '\n'
-    h3 = "/*                                                        :::      ::::::::   */" + '\n'
-    h4 = "/*   %s:+:      :+:    :+:   */" % (filename.ljust(51, ' ')) + '\n'
-    h5 = "/*                                                    +:+ +:+         +:+     */" + '\n'
-    h6 = "/*   By: %s+#+  +:+       +#+        */" % ((author + ' <marvin@42.fr>').ljust(43, ' ')) + '\n'
-    h7 = "/*                                                +#+#+#+#+#+   +#+           */" + '\n'
-    h8 = "/*   Created: %s by %s#+#    #+#             */" % (create, author.ljust(18, ' ')) + '\n'
-    h9 = "/*   Updated: %s by %s###   ########.fr       */" % (mod, author.ljust(17, ' ')) + '\n'
-    h10 = "/*                                                                            */" + '\n'
-    h11 = "/* ************************************************************************** */" + '\n'
-    h = h1 + h2 + h3 + h4 + h5 + h6 + h7 + h8 + h9 + h10 + h11
+    h = """/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   {filename}:+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: {author}+#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: {time_cr} by {author_cr}#+#    #+#             */
+/*   Updated: {time_upd} by {author_upd}###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+"""
+    h = h.format(
+        filename=filename.ljust(51, ' '),
+        author=(author + ' <marvin@42.fr>').ljust(43, ' '),
+        time_cr=create,
+        author_cr=author.ljust(18, ' '),
+        time_upd=mod,
+        author_upd= author.ljust(17, ' ')
+    )
     # print(h)
     with open(path, 'r+') as f:
         lines = f.readlines()

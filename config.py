@@ -1,1 +1,1 @@
-AUTHORS = ['dgreat']
+AUTHORS = ['sleonard', 'gfoote', 'ahorker', 'dgreat']
