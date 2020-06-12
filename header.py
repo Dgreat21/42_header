@@ -51,17 +51,21 @@ def createHeader(path, author):
     h3 = "/*                                                        :::      ::::::::   */" + '\n'
     h4 = "/*   %s:+:      :+:    :+:   */" % (filename.ljust(51, ' ')) + '\n'
     h5 = "/*                                                    +:+ +:+         +:+     */" + '\n'
-    h6 = "/*   By: %s+#+  +:+       +#+        */" % (author + ' <marvin@42.fr>'.ljust(37, ' ')) + '\n'
+    h6 = "/*   By: %s+#+  +:+       +#+        */" % ((author + ' <marvin@42.fr>').ljust(43, ' ')) + '\n'
     h7 = "/*                                                +#+#+#+#+#+   +#+           */" + '\n'
     h8 = "/*   Created: %s by %s#+#    #+#             */" % (create, author.ljust(18, ' ')) + '\n'
     h9 = "/*   Updated: %s by %s###   ########.fr       */" % (mod, author.ljust(17, ' ')) + '\n'
     h10 = "/*                                                                            */" + '\n'
     h11 = "/* ************************************************************************** */" + '\n'
     h = h1 + h2 + h3 + h4 + h5 + h6 + h7 + h8 + h9 + h10 + h11
+    # print(h)
     with open(path, 'r+') as f:
         lines = f.readlines()
+        len_lines = len(lines)
+        tmp = lines[0:len_lines-1]
         f.seek(0)
-        f.writelines([h + '\n'] + lines)
+        f.writelines([h + '\n'] + tmp)
+        # f.write('\n')
 
 
 def addHeadersToDir(path):
@@ -71,6 +75,9 @@ def addHeadersToDir(path):
     for node in queue:
         cleanFile(node)
         createHeader(node, AUTHORS[random.randint(0, len(AUTHORS) - 1)])
+        # fix = open(node, 'a')
+        # fix.write('\n')
+
 
 
 for arg in argv:
