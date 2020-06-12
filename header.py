@@ -10,7 +10,7 @@ def findAllFiles(path, lst):
     for node in dir_:
         if os.path.isdir(path + '/' + node):
             findAllFiles(path + '/' + node, lst)
-        elif node.find('.c') or node.find('.h'):
+        elif node.re('.+\.[ch]'):
             lst.append(path + '/' + node)
         else:
             continue
@@ -65,7 +65,6 @@ def createHeader(path, author):
         tmp = lines[0:len_lines-1]
         f.seek(0)
         f.writelines([h + '\n'] + tmp)
-        # f.write('\n')
 
 
 def addHeadersToDir(path):
@@ -75,9 +74,6 @@ def addHeadersToDir(path):
     for node in queue:
         cleanFile(node)
         createHeader(node, AUTHORS[random.randint(0, len(AUTHORS) - 1)])
-        # fix = open(node, 'a')
-        # fix.write('\n')
-
 
 
 for arg in argv:
