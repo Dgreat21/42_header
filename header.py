@@ -1,3 +1,4 @@
+import re
 import os
 import random
 from datetime import datetime
@@ -6,11 +7,18 @@ from sys import argv
 
 
 def findAllFiles(path, lst):
-    dir_ = os.listdir(path)
+    if os.path.isdir(path):
+        dir_ = os.listdir(path)
+    elif os.path.isfile(path) and re.match('.+\.[ch]', path):
+        lst.append(path)
+        return
+    else:
+        return
     for node in dir_:
-        if os.path.isdir(path + '/' + node):
+        if os.path.isdir(path + '/' + node) and node != 'external':
             findAllFiles(path + '/' + node, lst)
-        elif node.re('.+\.[ch]'):
+        elif re.match('.+\.[ch]', node):
+            # print(node)
             lst.append(path + '/' + node)
         else:
             continue
@@ -62,7 +70,7 @@ def createHeader(path, author):
     with open(path, 'r+') as f:
         lines = f.readlines()
         len_lines = len(lines)
-        tmp = lines[0:len_lines-1]
+        tmp = lines[0:len_lines]
         f.seek(0)
         f.writelines([h + '\n'] + tmp)
 
@@ -72,12 +80,12 @@ def addHeadersToDir(path):
     queue = []
     findAllFiles(path, queue)
     for node in queue:
-        cleanFile(node)
+        # cleanFile(node)
         createHeader(node, AUTHORS[random.randint(0, len(AUTHORS) - 1)])
 
 
 for arg in argv:
-    if os.path.isdir(arg):
+    if os.path.isdir(arg) or os.path.isfile(arg):
         addHeadersToDir(arg)
     elif arg == 'header.py':
         continue
